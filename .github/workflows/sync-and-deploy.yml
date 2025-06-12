@@ -1,0 +1,57 @@
+name: Sync Files and Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch file list
+        run: |
+          wget -qO filelist.json 'https://diagmindtw.com/sql_read_api/persist.php?getFileList'
+
+      - name: Download and place files
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          files=$(jq -c '.[]' filelist.json)
+          for item in $files; do
+            path=$(echo "$item" | jq -r '.relative_path_with_filename')
+            hash=$(echo "$item" | jq -r '.file_hash')
+            linux_path=${path//\\//}
+            dir=$(dirname "$linux_path")
+            mkdir -p "$dir"
+            wget -qO "$linux_path" "https://diagmindtw.com/sql_read_api/persist.php?getFile=$hash"
+          done
+
+      - name: Download onenote-api-utils
+        run: |
+          wget -qO onenote.zip https://github.com/andythebreaker/onenote-api-utils/archive/refs/tags/V0.0.0.zip
+          unzip -q onenote.zip
+          mv onenote-api-utils-0.0.0 onenote
+
+      - name: Copy synced files
+        run: |
+          jq -r '.[].relative_path_with_filename' filelist.json | while read -r path; do
+            linux_path=${path//\\//}
+            cp -f "$linux_path" "onenote/$linux_path"
+          done
+
+      - name: Build site
+        working-directory: onenote
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: onenote/_site
