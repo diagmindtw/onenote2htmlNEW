@@ -16,6 +16,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Ruby and Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.x        # or whatever version you target
+          bundler-cache: true
+
+      - name: Install Jekyll CLI
+        run: |
+          gem install jekyll bundler
+          bundle install           # only if you have a Gemfile with plugins
+
+
       - name: Fetch file list
         run: |
           wget -qO filelist.json --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" 'https://diagmindtw.com/sql_read_api/persist.php?getFileList'
