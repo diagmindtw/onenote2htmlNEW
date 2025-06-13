@@ -19,7 +19,7 @@ jobs:
       - name: Setup Ruby and Jekyll
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.x        # or whatever version you target
+          ruby-version: 3.2.8         # or whatever version you target
           bundler-cache: true
 
       - name: Install Jekyll CLI
