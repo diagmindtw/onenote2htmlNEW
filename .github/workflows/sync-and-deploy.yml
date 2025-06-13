@@ -77,15 +77,16 @@ jobs:
           npm run build
 
 
-
       - name:  list built files
         run: |
-          echo "Contents of dist/:"
-          ls -R dist
+          echo "Contents of onenote/dist/:"
+          ls -R onenote/dist
+
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages       # or whichever branch you publish to
-          folder: dist           # point this at your actual build output dir
+          branch: gh-pages
+          folder: onenote/dist
+
 
