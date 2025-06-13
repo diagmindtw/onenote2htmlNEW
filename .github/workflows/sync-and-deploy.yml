@@ -9,6 +9,9 @@ jobs:
       contents: read
       pages: write
       id-token: write
+    env:
+      ONENOTE_NOTEBOOK_ID: ${{ vars.ONENOTE_NOTEBOOK_ID }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,6 +24,14 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
+      
+          # 檢查 filelist.json 是否為空陣列，若是就錯誤退出
+          if [ "$(jq '. | length' filelist.json)" -eq 0 ]; then
+            echo "Error: filelist.json is empty, aborting." >&2
+            exit 1
+          fi
+      
+          # 真的有檔案才進入 for loop
           files=$(jq -c '.[]' filelist.json)
           for item in $files; do
             path=$(echo "$item" | jq -r '.relative_path_with_filename')
@@ -28,8 +39,11 @@ jobs:
             linux_path=${path//\\//}
             dir=$(dirname "$linux_path")
             mkdir -p "$dir"
-            wget -qO "$linux_path" --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" "https://diagmindtw.com/sql_read_api/persist.php?getFile=$hash"
+            wget -qO "$linux_path" \
+              --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" \
+              "https://diagmindtw.com/sql_read_api/persist.php?getFile=$hash"
           done
+
 
       - name: Download onenote-api-utils
         run: |
