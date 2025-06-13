@@ -25,7 +25,7 @@ jobs:
       - name: Install Jekyll CLI
         run: |
           gem install jekyll bundler
-          bundle install           # only if you have a Gemfile with plugins
+          #bundle install           # only if you have a Gemfile with plugins
 
 
       - name: Fetch file list
