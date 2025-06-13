@@ -87,6 +87,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: onenote/dist
+          folder: onenote/dist     # ← match your build output
+
 
 
