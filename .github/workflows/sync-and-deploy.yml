@@ -57,9 +57,10 @@ jobs:
 
       - name: Download onenote-api-utils
         run: |
-          wget -qO onenote.zip --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" https://github.com/andythebreaker/onenote-api-utils/archive/refs/tags/V0.0.1.zip
+          #wget -qO onenote.zip --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" https://github.com/andythebreaker/onenote-api-utils/archive/refs/tags/V0.0.1.zip
+          wget -qO onenote.zip --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:115.0) Gecko/20100101 Firefox/115.0" https://github.com/andythebreaker/onenote-api-utils/archive/refs/tags/V0.99.0.zip
           unzip -q onenote.zip
-          mv onenote-api-utils-0.0.1 onenote
+          mv onenote-api-utils-0.99.0 onenote
 
       - name: Copy synced files
         run: |
