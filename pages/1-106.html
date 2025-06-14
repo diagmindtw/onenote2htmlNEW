@@ -2,11 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>靜脈血栓栓塞症（Venous Thromboembolism, VTE）</title>
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
 </head>
 <body>
-  <div class="ui grid">
+  <div class="ui stackable grid">
     <div class="four wide column">
       <ul>
         
@@ -1166,5 +1168,12 @@ CrCl &gt;95 避免用於 AF 預防</span></td>
       </div>
     </div>
   </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
